@@ -1,0 +1,22 @@
+{
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  },
+  "name": "simple-crud-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaPuTaH-UluTka/Simple-CRUD-API.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaPuTaH-UluTka/Simple-CRUD-API/issues"
+  },
+  "homepage": "https://github.com/KaPuTaH-UluTka/Simple-CRUD-API#readme",
+  "description": ""
+}
