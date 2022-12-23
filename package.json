@@ -1,11 +1,10 @@
 {
-  "devDependencies": {
-    "typescript": "^4.9.4"
-  },
   "name": "simple-crud-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
+    "start:prod": "tsc && node build/index.js",
+    "start:dev": "nodemon src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,5 +17,22 @@
     "url": "https://github.com/KaPuTaH-UluTka/Simple-CRUD-API/issues"
   },
   "homepage": "https://github.com/KaPuTaH-UluTka/Simple-CRUD-API#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^18.11.16",
+    "@types/uuid": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "eslint": "^8.30.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard-with-typescript": "^24.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.6.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^2.0.20",
+    "prettier": "2.8.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
 }
