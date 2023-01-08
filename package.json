@@ -5,6 +5,7 @@
   "scripts": {
     "start:prod": "tsc && node build/index.js",
     "start:dev": "nodemon src/index.ts",
+    "multi": "nodemon src/multi.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
