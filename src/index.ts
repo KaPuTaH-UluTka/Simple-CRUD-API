@@ -2,10 +2,12 @@ import { createServer } from 'http';
 import { createUser, deleteUser, getUser, getUsers, updateUser } from './user/userController';
 import dotenv from 'dotenv';
 import path from 'node:path';
+import { sendResponse } from './utils/sendResponse';
+import { ERRORS } from './utils/constants/errors';
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
-export const server = createServer((req, res) => {
+const server = createServer((req, res) => {
   if (!req.url) return;
 
   if (req.url === '/api/users') {
@@ -20,6 +22,8 @@ export const server = createServer((req, res) => {
     if (req.method === 'PUT') return updateUser(req, res, id);
     if (req.method === 'DELETE') return deleteUser(req, res, id);
   }
+
+  sendResponse(404, { error: ERRORS.base404 }, res);
 });
 
 const PORT = process.env.PORT || 3000;
