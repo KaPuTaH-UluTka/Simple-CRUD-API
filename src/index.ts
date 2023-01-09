@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'node:path';
 import { sendResponse } from './utils/sendResponse';
 import { ERRORS } from './utils/constants/errors';
+import { checkUUID } from './utils/checkUUID';
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
@@ -18,6 +19,7 @@ const server = createServer((req, res) => {
   const id = req.url.split('/').splice(-1,1).join();
 
   if(id) {
+    if (!checkUUID(id)) return sendResponse(400, { error: ERRORS.invalidId400 }, res);
     if (req.method === 'GET') return getUser(req, res, id);
     if (req.method === 'PUT') return updateUser(req, res, id);
     if (req.method === 'DELETE') return deleteUser(req, res, id);
