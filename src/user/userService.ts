@@ -5,7 +5,6 @@ import { pid } from 'process';
 process.on('message', (msg: any) => {
   users.length = 0;
   msg.forEach((e: IUser)=> users.push(e));
-  console.log(users);
 });
 export function findAllUsers(): Promise<IUser[]> {
   return new Promise((resolve) => {

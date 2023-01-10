@@ -8,7 +8,7 @@ import { checkUUID } from './utils/checkUUID';
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
-const server = createServer((req, res) => {
+export const server = createServer((req, res) => {
   if (!req.url) return;
 
   if (req.url === '/api/users') {
