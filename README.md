@@ -1,4 +1,4 @@
-Hello! Clone this repository, change port at .env file(if you want) and run scripts:
+Hello! Clone this repository(git clone https://github.com/KaPuTaH-UluTka/Simple-CRUD-API), change port at .env file(if you want) and run scripts:
 
 "npm run start:prod" to run application on production mode;
 "npm run start:dev" to run application on dev mode;
