@@ -1,12 +1,9 @@
 import { createServer } from 'http';
 import { createUser, deleteUser, getUser, getUsers, updateUser } from './user/userController';
-import dotenv from 'dotenv';
-import path from 'node:path';
 import { sendResponse } from './utils/sendResponse';
 import { ERRORS } from './utils/constants/errors';
 import { checkUUID } from './utils/checkUUID';
-
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+import { PORT } from './utils/port';
 
 export const server = createServer((req, res) => {
   if (!req.url) return;
@@ -27,7 +24,5 @@ export const server = createServer((req, res) => {
 
   sendResponse(404, { error: ERRORS.base404 }, res);
 });
-
-const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

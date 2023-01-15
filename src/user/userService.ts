@@ -2,13 +2,10 @@ import { INewUser, IUser } from '../types/user';
 import { v4 as uuid } from 'uuid';
 import { users } from './userModel';
 import { pid } from 'process';
-process.on('message', (msg: any) => {
-  users.length = 0;
-  msg.forEach((e: IUser)=> users.push(e));
-});
+
 export function findAllUsers(): Promise<IUser[]> {
   return new Promise((resolve) => {
-    process.send?.({ users, pid });
+    process.send?.({ users, pid })
     resolve(users);
   });
 }

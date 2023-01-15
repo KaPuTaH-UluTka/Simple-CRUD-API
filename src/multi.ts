@@ -1,16 +1,16 @@
 import cluster, { Worker } from 'cluster';
 import { cpus } from 'os';
-import dotenv from 'dotenv';
-import path from 'node:path';
 import { createServer } from 'http';
 import { createUser, deleteUser, getUser, getUsers, updateUser } from './user/userController';
 import { sendResponse } from './utils/sendResponse';
 import { ERRORS } from './utils/constants/errors';
 import { checkUUID } from './utils/checkUUID';
-
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+import { users } from './user/userModel';
+import { IUser } from './types/user';
+import { PORT } from './utils/port';
 
 const server = createServer((req, res) => {
+  console.log(cluster.isPrimary);
   if (!req.url) return;
 
   if (req.url === '/api/users') {
@@ -30,16 +30,24 @@ const server = createServer((req, res) => {
   sendResponse(404, { error: ERRORS.base404 }, res);
 });
 
-const PORT = Number(process.env.PORT || 3000);
-
 const multi = async () => {
   const numOfCpus = cpus().length;
+
+  process.on('message', (msg: any) => {
+    users.length = 0;
+    msg.forEach((e: IUser)=> users.push(e));
+  });
 
   if (cluster.isPrimary) {
     const workers: Worker[] = [];
 
-    console.log(`Primary process pid: ${process.pid}`);
+    server.listen(PORT, () => {
+      console.log(`Primary pid:${process.pid}, server running on port: ${PORT}`);
+    });
+
+
     console.log(`Starting ${numOfCpus} workers`);
+
     for (let i = 0; i < numOfCpus; i++) {
       const worker = cluster.fork();
       workers.push(worker);
@@ -56,7 +64,10 @@ const multi = async () => {
     });
   } else {
     const id = cluster.worker?.id;
-    await server.listen(PORT + Number(cluster.worker?.id), () => console.log(`Server running on port ${PORT + Number(cluster.worker?.id)}`));
+    const MULTI_PORT = PORT + Number(cluster.worker?.id);
+
+    server.listen(MULTI_PORT, () => console.log(`Server running on port ${MULTI_PORT}`));
+
     console.log(`Worker: ${id}, pid: ${process.pid}`);
   }
 };
