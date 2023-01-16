@@ -2,6 +2,7 @@ import { ERRORS } from './constants/errors';
 import { sendResponse } from './sendResponse';
 import { IncomingMessage, ServerResponse } from 'http';
 import { IUser } from '../types/user';
+import { log } from 'util';
 
 export const getPostData = async (req: IncomingMessage, res: ServerResponse): Promise<IUser> => {
   return new Promise((resolve, reject) => {
@@ -11,7 +12,7 @@ export const getPostData = async (req: IncomingMessage, res: ServerResponse): Pr
 
       req
         .on('data', (chunk: { toString: () => string; }) => {
-          body += chunk.toString();
+          body += chunk;
         })
         .on('end', () => {
           try {
@@ -25,10 +26,13 @@ export const getPostData = async (req: IncomingMessage, res: ServerResponse): Pr
                 },
                 res
               );
+            } else {
+              reject(error);
             }
-            reject(error);
           }
-        });
+        }).on('error',()=>{
+        reject();
+      });
     } catch (error) {
       sendResponse(
         500,
