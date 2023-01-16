@@ -10,28 +10,32 @@ import { IUser } from './types/user';
 import { PORT } from './utils/port';
 import { requestSplitter } from './utils/requestSplitter';
 
-const server = createServer((req, res) => {
+
+const server = createServer(async (req, res) => {
+
   if (cluster.isPrimary) {
-    requestSplitter(req,res);
+    console.log('primary');
+    await requestSplitter(req, res);
+  } else {
+    console.log('worker');
+    if (!req.url) return;
+
+    if (req.url === '/api/users') {
+      if (req.method === 'GET') return getUsers(req, res);
+
+      if (req.method === 'POST') return createUser(req, res);
+    }
+    const id = req.url.split('/').splice(-1, 1).join();
+
+    if (id) {
+      if (!checkUUID(id)) return sendResponse(400, { error: ERRORS.invalidId400 }, res);
+      if (req.method === 'GET') return getUser(req, res, id);
+      if (req.method === 'PUT') return updateUser(req, res, id);
+      if (req.method === 'DELETE') return deleteUser(req, res, id);
+    }
+
+    sendResponse(404, { error: ERRORS.base404 }, res);
   }
-
-  if (!req.url) return;
-
-  if (req.url === '/api/users') {
-    if (req.method === 'GET') return getUsers(req, res);
-
-    if (req.method === 'POST') return createUser(req, res);
-  }
-  const id = req.url.split('/').splice(-1, 1).join();
-
-  if (id) {
-    if (!checkUUID(id)) return sendResponse(400, { error: ERRORS.invalidId400 }, res);
-    if (req.method === 'GET') return getUser(req, res, id);
-    if (req.method === 'PUT') return updateUser(req, res, id);
-    if (req.method === 'DELETE') return deleteUser(req, res, id);
-  }
-
-  sendResponse(404, { error: ERRORS.base404 }, res);
 });
 
 const multi = async () => {
@@ -61,6 +65,11 @@ const multi = async () => {
         });
       });
     }
+
+    cluster.on('message', (worker, msg) => {
+      users.length = 0;
+      msg.users.forEach((e: IUser) => users.push(e));
+    });
 
     cluster.on('exit', (worker) => {
       console.log(`Worker ${worker.process.pid} stopped`);

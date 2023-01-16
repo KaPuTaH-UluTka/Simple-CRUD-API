@@ -6,8 +6,8 @@ import { PORT } from './port';
 import { cpus } from 'os';
 
 let portIncrement = 0;
-export const requestSplitter = (req: IncomingMessage, res: ServerResponse) => {
-  const postData = getPostData(req, res) || '';
+export const requestSplitter = async (req: IncomingMessage, res: ServerResponse) => {
+  const postData = await getPostData(req, res) || '';
   const hostname = checkHost(req.headers.host || '');
   const port = Number(PORT) + 1 + (portIncrement++ % cpus().length);
 
@@ -25,7 +25,7 @@ export const requestSplitter = (req: IncomingMessage, res: ServerResponse) => {
   const request = http.request(options, (response) => {
     response.setEncoding('utf8');
     response.on('data', (chunk) => {
-      data += chunk;
+      data += chunk.toString();
     });
     response.on('end', () => {
       const statusCode = res.statusCode || 500;
@@ -36,7 +36,6 @@ export const requestSplitter = (req: IncomingMessage, res: ServerResponse) => {
       res.end(data);
     });
   });
-
   request.write(JSON.stringify(postData));
   request.end();
 };
