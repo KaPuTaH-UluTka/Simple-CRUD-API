@@ -8,9 +8,13 @@ import { checkUUID } from './utils/checkUUID';
 import { users } from './user/userModel';
 import { IUser } from './types/user';
 import { PORT } from './utils/port';
+import { requestSplitter } from './utils/requestSplitter';
 
 const server = createServer((req, res) => {
-  console.log(cluster.isPrimary);
+  if (cluster.isPrimary) {
+    requestSplitter(req,res);
+  }
+
   if (!req.url) return;
 
   if (req.url === '/api/users') {
@@ -18,9 +22,9 @@ const server = createServer((req, res) => {
 
     if (req.method === 'POST') return createUser(req, res);
   }
-  const id = req.url.split('/').splice(-1,1).join();
+  const id = req.url.split('/').splice(-1, 1).join();
 
-  if(id) {
+  if (id) {
     if (!checkUUID(id)) return sendResponse(400, { error: ERRORS.invalidId400 }, res);
     if (req.method === 'GET') return getUser(req, res, id);
     if (req.method === 'PUT') return updateUser(req, res, id);
@@ -35,7 +39,7 @@ const multi = async () => {
 
   process.on('message', (msg: any) => {
     users.length = 0;
-    msg.forEach((e: IUser)=> users.push(e));
+    msg.forEach((e: IUser) => users.push(e));
   });
 
   if (cluster.isPrimary) {
@@ -44,7 +48,6 @@ const multi = async () => {
     server.listen(PORT, () => {
       console.log(`Primary pid:${process.pid}, server running on port: ${PORT}`);
     });
-
 
     console.log(`Starting ${numOfCpus} workers`);
 
