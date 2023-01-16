@@ -1,19 +1,27 @@
 Hello!
 Clone this repository:
 <code>git clone https://github.com/KaPuTaH-UluTka/Simple-CRUD-API </code>
+
 Switch on dev branch:
-<code>Git run start:prod</code>
+<code>git checkout develop</code>
+
 Change port at .env file(if you want) and run scripts.
+
 Run application on production mode:
 <code>npm run start:prod</code>
+
 Run application on dev mode:
 <code>npm run start:dev</code>
+
 Run application on cluster mode:
 <code>npm run start:multi</code>
+
 Run first test case:
 <code>npm run firstTest</code>
+
 Run second test case:
 <code>npm run secondTest</code>
+
 Run third test case:
 <code>npm run thirdTest</code> 
 
