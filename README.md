@@ -25,7 +25,7 @@ Run second test case:<br/>
 Run third test case:<br/>
 <code>npm run thirdTest</code> 
 
-Server API
+### Server API ###
 
 Methods:
 
