@@ -5,7 +5,7 @@ import { pid } from 'process';
 
 export function findAllUsers(): Promise<IUser[]> {
   return new Promise((resolve) => {
-    process.send?.({ users, pid })
+    process.send?.({ users, pid });
     resolve(users);
   });
 }

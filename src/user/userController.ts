@@ -3,7 +3,6 @@ import { createNewUser, deleteUserById, findAllUsers, findUserById, updateUserBy
 import { sendResponse } from '../utils/sendResponse';
 import { ERRORS } from '../utils/constants/errors';
 import { getPostData } from '../utils/getPostData';
-import { log } from 'util';
 
 export const getUsers = async (req: IncomingMessage, res: ServerResponse) => {
   try {
@@ -24,6 +23,7 @@ export const createUser = async (req: IncomingMessage, res: ServerResponse) => {
   try {
     const body = await getPostData(req, res);
     const { username, age, hobbies } = body;
+
     if (!username || !age || !hobbies) return sendResponse(400, { error: ERRORS.post400 }, res);
 
     const newUser = {

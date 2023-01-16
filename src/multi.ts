@@ -1,5 +1,7 @@
 import cluster, { Worker } from 'cluster';
 import { cpus } from 'os';
+import dotenv from 'dotenv';
+import path from 'node:path';
 import { createServer } from 'http';
 import { createUser, deleteUser, getUser, getUsers, updateUser } from './user/userController';
 import { sendResponse } from './utils/sendResponse';
@@ -70,7 +72,6 @@ const multi = async () => {
       users.length = 0;
       msg.users.forEach((e: IUser) => users.push(e));
     });
-
     cluster.on('exit', (worker) => {
       console.log(`Worker ${worker.process.pid} stopped`);
     });
