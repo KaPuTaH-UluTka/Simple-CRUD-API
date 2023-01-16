@@ -29,28 +29,33 @@ Server API
 
 Methods:
 
-GET
+### GET ###
+
 <code>api/users</code>  for all users<br/>
 Server should answer with status code 200 and all users records
 
-GET
+### GET ###
+
 <code>api/users/${userId}</code> for uniq user<br/>
 Server answers with status code 200 and record with id === userId if it exists
 <br/>Server answers with status code 400 and corresponding message if userId is invalid (not uuid)
 <br/>Server answers with status code 404 and corresponding message if record with id === userId doesn't exist
 
-POST
+### POST ###
+
 <code>api/users</code>  for create new user<br/>
 Server answers with status code 201 and newly created record
 <br/>Server answers with status code 400 and corresponding message if request body does not contain required fields
 
-PUT 
+### PUT ###
+
 <code>api/users/{userId}</code>  for update uniq user<br/>
 Server answers with status code 200 and updated record
 <br/>Server answers with status code 400 and corresponding message if userId is invalid (not uuid)
 <br/>Server answers with status code 404 and corresponding message if record with id === userId doesn't exist
 
-DELETE 
+### DELETE ###
+
 <code>api/users/${userId}</code>  for delete uniq user<br/>
 Server answers with status code 204 if the record is found and deleted
 <br/>Server answers with status code 400 and corresponding message if userId is invalid (not uuid)
