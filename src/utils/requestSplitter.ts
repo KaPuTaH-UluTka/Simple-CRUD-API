@@ -10,7 +10,6 @@ export const requestSplitter = async (req: IncomingMessage, res: ServerResponse)
   const postData = await getPostData(req, res) || '';
   const hostname = checkHost(req.headers.host || '');
   const port = Number(PORT) + 1 + (portIncrement++ % cpus().length);
-
   const options = {
     hostname: hostname,
     port: port,
@@ -28,10 +27,11 @@ export const requestSplitter = async (req: IncomingMessage, res: ServerResponse)
       data += chunk.toString();
     });
     response.on('end', () => {
-      const statusCode = res.statusCode || 500;
+      const statusCode = response.statusCode || 500;
       console.log(
         `Response from ${hostname}:${port} with ${req.method} request`
       );
+
       res.writeHead(statusCode, { 'Content-Type': 'application/json' });
       res.end(data);
     });
