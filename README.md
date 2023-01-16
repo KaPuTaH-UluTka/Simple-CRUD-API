@@ -5,6 +5,9 @@ Clone this repository:<br/>
 Switch on dev branch:<br/>
 <code>git checkout develop</code>
 
+Install dependencies:<br/>
+<code>npm i</code>
+
 Change port at .env file(if you want) and run scripts.
 
 Run application on production mode:<br/>
