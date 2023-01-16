@@ -2,7 +2,6 @@ import { ERRORS } from './constants/errors';
 import { sendResponse } from './sendResponse';
 import { IncomingMessage, ServerResponse } from 'http';
 import { IUser } from '../types/user';
-import { log } from 'util';
 
 export const getPostData = async (req: IncomingMessage, res: ServerResponse): Promise<IUser> => {
   return new Promise((resolve, reject) => {
