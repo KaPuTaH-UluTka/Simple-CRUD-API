@@ -16,10 +16,8 @@ import { requestSplitter } from './utils/requestSplitter';
 const server = createServer(async (req, res) => {
 
   if (cluster.isPrimary) {
-    console.log('primary');
     await requestSplitter(req, res);
   } else {
-    console.log('worker');
     if (!req.url) return;
 
     if (req.url === '/api/users') {
@@ -27,9 +25,10 @@ const server = createServer(async (req, res) => {
 
       if (req.method === 'POST') return createUser(req, res);
     }
+
     const id = req.url.split('/').splice(-1, 1).join();
 
-    if (id) {
+    if (req.url === '/api/users/' + id) {
       if (!checkUUID(id)) return sendResponse(400, { error: ERRORS.invalidId400 }, res);
       if (req.method === 'GET') return getUser(req, res, id);
       if (req.method === 'PUT') return updateUser(req, res, id);

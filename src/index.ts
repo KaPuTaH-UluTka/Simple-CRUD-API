@@ -15,7 +15,7 @@ export const server = createServer((req, res) => {
   }
   const id = req.url.split('/').splice(-1,1).join();
 
-  if(id) {
+  if (req.url === '/api/users/' + id) {
     if (!checkUUID(id)) return sendResponse(400, { error: ERRORS.invalidId400 }, res);
     if (req.method === 'GET') return getUser(req, res, id);
     if (req.method === 'PUT') return updateUser(req, res, id);
